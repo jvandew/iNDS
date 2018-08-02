@@ -51,7 +51,7 @@
             settingsButtonRects[i] = CGRectMake(0, 0, 40, 40);
             startButtonRects[i] = selectButtonRects[i] = CGRectMake(0, 0, 48, 28);
             leftTriggerRects[i] = rightTriggerRects[i] = CGRectMake(0, 0, 67, 44);
-            directionalControlRects[i] = buttonControlRects[i] = CGRectMake(0, 0, 120, 120);
+            directionalControlRects[i] = buttonControlRects[i] = CGRectMake(0, 0, 160, 160);
             fpsLabelRects[i] = CGRectMake(40, 5, 240, 24);
         }
         // Setup the default screen profile
@@ -61,20 +61,22 @@
         CGSize gameScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height * 1.333 * 0.5), MIN(screenSize.width, screenSize.height * 1.333 * 0.5) * 0.75); //Bound the screens by height or width
         NSInteger view = 0; //0 Portait, 1 Landscape
         // Portrait
-        mainScreenRects[view] = CGRectMake(screenSize.width/2 - gameScreenSize.width/2, (screenSize.height / 2) - gameScreenSize.height, gameScreenSize.width, gameScreenSize.height);
-        touchScreenRects[view] = CGRectMake(screenSize.width/2 - gameScreenSize.width/2, screenSize.height/2, gameScreenSize.width, gameScreenSize.height);
-        startButtonRects[view].origin = CGPointMake(screenSize.width/2 - 48 - 7, screenSize.height - 28 - 7);
-        selectButtonRects[view].origin = CGPointMake(screenSize.width/2 + 7, screenSize.height - 28 - 7);
-        leftTriggerRects[view].origin = CGPointMake(0, screenSize.height/2);
-        rightTriggerRects[view].origin = CGPointMake(screenSize.width - 67, screenSize.height/2);
+        double verticalOffset = screenSize.height/2 - (settingsButtonRects[view].size.height + gameScreenSize.height);
+        double buttonOffset = 2*gameScreenSize.height + settingsButtonRects[view].size.height;
+        mainScreenRects[view] = CGRectMake(screenSize.width/2 - gameScreenSize.width/2, settingsButtonRects[view].size.height, gameScreenSize.width, gameScreenSize.height);
+        touchScreenRects[view] = CGRectMake(screenSize.width/2 - gameScreenSize.width/2, settingsButtonRects[view].size.height + gameScreenSize.height, gameScreenSize.width, gameScreenSize.height);
+        startButtonRects[view].origin = CGPointMake(screenSize.width/2 - 48 - 7, buttonOffset + 7);
+        selectButtonRects[view].origin = CGPointMake(screenSize.width/2 + 7, buttonOffset + 7);
+        leftTriggerRects[view].origin = CGPointMake(0, screenSize.height/2 - verticalOffset);
+        rightTriggerRects[view].origin = CGPointMake(screenSize.width - 67, screenSize.height/2 - verticalOffset);
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            directionalControlRects[view].origin = CGPointMake(10, screenSize.height - 130);
-            buttonControlRects[view].origin = CGPointMake(screenSize.width - 120 - 10, screenSize.height - 130);
+            directionalControlRects[view].origin = CGPointMake(10, buttonOffset + 10);
+            buttonControlRects[view].origin = CGPointMake(screenSize.width - 160 - 10, buttonOffset + 10);
         } else {
-            directionalControlRects[view].origin = CGPointMake(10, screenSize.height - 160);
-            buttonControlRects[view].origin = CGPointMake(screenSize.width - 120 - 10, screenSize.height - 160);
+            directionalControlRects[view].origin = CGPointMake(10, buttonOffset + 10);
+            buttonControlRects[view].origin = CGPointMake(screenSize.width - 160 - 10, buttonOffset + 10);
         }
-        
+      
         // Landscape
         screenSize = CGSizeMake(screenSize.height, screenSize.width);
         gameScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height * 1.333 * 0.5), MIN(screenSize.width, screenSize.height * 1.333 * 0.5) * 0.75);
